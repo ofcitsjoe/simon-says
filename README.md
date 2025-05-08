@@ -1,2 +1,3 @@
 # mini-project-javascript
-A mini project I made including javascript
+
+This project consists of the game Simon Says, which is made using html, css and javascript.
