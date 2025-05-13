@@ -26,7 +26,15 @@ function btnFlash(btn) {
   }, 300);
 }
 
+function wrongFlash(btn) {
+  btn.classList.add("wrongflash");
+  setTimeout(function () {
+    btn.classList.remove("wrongflash");
+  }, 300);
+}
+
 function lvlUp() {
+  userSeq = [];
   level++;
   h3.innerText = `Level ${level}`;
 
@@ -34,15 +42,49 @@ function lvlUp() {
   let randClr = btns[randIdx];
   let randBtn = document.querySelector(`.${randClr}`);
 
+  gameSeq.push(randClr);
+  console.log(gameSeq);
+
   btnFlash(randBtn);
+}
+
+function checkAns(lvlIdx) {
+  if (started == true) {
+    if (userSeq[lvlIdx] === gameSeq[lvlIdx]) {
+      if (userSeq.length === gameSeq.length) {
+        setTimeout(lvlUp, 1000);
+      }
+    } else {
+      h2.innerHTML = `Game over! Your score was <b>${level}</b> <br> Press enter to key to try again`;
+      h3.innerText = `Practise makes perfect! :D`;
+
+      let wrongBtnId = userSeq[lvlIdx];
+      let wrongBtn = document.getElementById(wrongBtnId);
+      wrongFlash(wrongBtn);
+
+      reset();
+    }
+  }
 }
 
 function btnPress() {
   let btn = this;
   btnFlash(btn);
+
+  userColor = btn.getAttribute("id");
+  userSeq.push(userColor);
+
+  checkAns(userSeq.length - 1);
 }
 
 let allBtns = document.querySelectorAll(".btn");
 for (btn of allBtns) {
   btn.addEventListener("click", btnPress);
+}
+
+function reset() {
+  started = false;
+  gameSeq = [];
+  userSeq = [];
+  level = 0;
 }
